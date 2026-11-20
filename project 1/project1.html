@@ -1,0 +1,854 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZenZone - CalmCode Retreat</title>
+
+<style>
+:root {
+  --bg: #f5f7f2;
+  --card: #ffffff;
+  --ink: #26352f;
+  --muted: #718078;
+  --sage: #a8c3ad;
+  --deep: #557b65;
+  --line: #e7ece6;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: Arial, sans-serif;
+  line-height: 1.55;
+}
+
+button {
+  cursor: pointer;
+  border: 0;
+  border-radius: 13px;
+  padding: 11px 16px;
+  background: var(--deep);
+  color: white;
+  font-weight: bold;
+}
+
+button:hover {
+  opacity: 0.85;
+}
+
+.secondary {
+  background: #edf3ed;
+  color: var(--deep);
+}
+
+header {
+  max-width: 1180px;
+  margin: auto;
+  padding: 25px 22px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo {
+  font-size: 25px;
+  background: #dceade;
+  padding: 10px;
+  border-radius: 15px;
+}
+
+.brand h1 {
+  margin: 0;
+}
+
+.brand small {
+  color: var(--muted);
+}
+
+main {
+  max-width: 1180px;
+  margin: auto;
+  padding: 15px 22px 50px;
+}
+
+.hero {
+  background: linear-gradient(115deg,#e5eee4,#eeeaf6,#f8eee6);
+  border-radius: 26px;
+  padding: 35px;
+  margin-bottom: 25px;
+}
+
+.hero h2 {
+  font-size: 38px;
+  line-height: 1.2;
+}
+
+.hero p {
+  color: #607067;
+}
+
+.section-head {
+  margin: 28px 0 14px;
+}
+
+.section-head h2 {
+  font-size: 21px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 15px;
+}
+
+.card {
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 10px 30px #314b3810;
+}
+
+.feature {
+  min-height: 165px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.feature .emoji {
+  font-size: 28px;
+}
+
+.feature p {
+  color: var(--muted);
+  font-size: 13px;
+  flex: 1;
+}
+
+.two {
+  display: grid;
+  grid-template-columns: 1.15fr .85fr;
+  gap: 15px;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.modal {
+  position: fixed;
+  inset: 0;
+  background: #17241dcc;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  z-index: 5;
+}
+
+.modal.show {
+  display: flex;
+}
+
+.modal-box {
+  background: #f8faf6;
+  border-radius: 25px;
+  max-width: 620px;
+  width: 100%;
+  padding: 27px;
+  max-height: 90vh;
+  overflow: auto;
+}
+
+.breath-circle {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  margin: 25px auto;
+  background: radial-gradient(circle,#e3f0e4,#a9c7b1);
+  display: grid;
+  place-items: center;
+  transition: transform 1s;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.timer {
+  font-size: 30px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.controls {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.moods {
+  display: flex;
+  gap: 8px;
+  margin: 15px 0;
+}
+
+.mood {
+  background: #f3f5f1;
+  color: black;
+  font-size: 23px;
+  border: 2px solid transparent;
+}
+
+.mood.selected {
+  border-color: var(--sage);
+}
+
+textarea {
+  width: 100%;
+  min-height: 75px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+
+.chart {
+  height: 120px;
+  display: flex;
+  align-items: end;
+  gap: 12px;
+}
+
+.barbox {
+  flex: 1;
+  text-align: center;
+  font-size: 12px;
+}
+
+.bar {
+  background: #85aa8d;
+  width: 100%;
+  max-width: 35px;
+  margin: auto auto 5px;
+  border-radius: 8px;
+}
+
+.pose-grid {
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  gap: 10px;
+}
+
+.pose {
+  background: #f0f5ef;
+  border-radius: 12px;
+  padding: 12px;
+  text-align: center;
+}
+
+.sos {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(140deg,#e5eee4,#ece8f5);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+  z-index: 8;
+}
+
+.sos.show {
+  display: flex;
+}
+
+.sos-inner {
+  max-width: 600px;
+}
+
+footer {
+  text-align: center;
+  color: var(--muted);
+  padding: 25px;
+}
+
+@media(max-width:800px) {
+  .grid {
+    grid-template-columns: repeat(2,1fr);
+  }
+
+  .two {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media(max-width:520px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  header {
+    padding: 15px;
+  }
+
+  main {
+    padding: 10px 15px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="brand">
+    <div class="logo">☁️</div>
+    <div>
+      <h1>ZenZone</h1>
+      <small>CalmCode Retreat</small>
+    </div>
+  </div>
+  <span>A little calm goes a long way</span>
+</header>
+
+<main>
+
+<section class="hero">
+  <h2>Pause. Breathe.<br>You've got this.</h2>
+  <p>A quiet corner for busy minds. Take a break and relax.</p>
+  <button onclick="openModal('breathModal')">
+    Start a calm break →
+  </button>
+</section>
+
+<div class="section-head">
+  <h2>Choose your reset</h2>
+</div>
+
+<section class="grid">
+
+<div class="card feature">
+  <div class="emoji">🫁</div>
+  <h3>Box Breathing</h3>
+  <p>Follow a gentle 4-4-4-4 breathing rhythm.</p>
+  <button onclick="openModal('breathModal')">Start breathing</button>
+</div>
+
+<div class="card feature">
+  <div class="emoji">🆘</div>
+  <h3>Exam Panic SOS</h3>
+  <p>A short guided reset for exam stress.</p>
+  <button onclick="startSOS()">Start SOS mode</button>
+</div>
+
+<div class="card feature">
+  <div class="emoji">🧘</div>
+  <h3>Desk Yoga</h3>
+  <p>Simple stretches for study breaks.</p>
+  <button onclick="openModal('yogaModal')">View 10 poses</button>
+</div>
+
+<div class="card feature">
+  <div class="emoji">🌧️</div>
+  <h3>Ambient Soundscape</h3>
+  <p>Relax with gentle sounds.</p>
+  <button onclick="openModal('soundModal')">Open soundscape</button>
+</div>
+
+<div class="card feature">
+  <div class="emoji">📔</div>
+  <h3>Mood Journal</h3>
+  <p>Record your daily mood.</p>
+  <button onclick="document.getElementById('journal').scrollIntoView()">Check in</button>
+</div>
+
+<div class="card feature">
+  <div class="emoji">⏳</div>
+  <h3>Meditation Timer</h3>
+  <p>Choose a peaceful meditation session.</p>
+  <button onclick="openModal('medModal')">Start timer</button>
+</div>
+
+</section>
+
+<div class="section-head">
+  <h2>Daily Check-in</h2>
+</div>
+
+<section class="two" id="journal">
+
+<div class="card">
+  <h3>How are you feeling today?</h3>
+
+  <div class="moods">
+    <button class="mood selected" onclick="chooseMood(this)">🙂</button>
+    <button class="mood" onclick="chooseMood(this)">😊</button>
+    <button class="mood" onclick="chooseMood(this)">😐</button>
+    <button class="mood" onclick="chooseMood(this)">😟</button>
+    <button class="mood" onclick="chooseMood(this)">😴</button>
+  </div>
+
+  <p>Stress level: <b id="stressVal">3 / 5</b></p>
+  <input id="stress" type="range" min="1" max="5" value="3"
+  oninput="stressVal.textContent=this.value+' / 5'">
+
+  <p>Your thoughts:</p>
+  <textarea id="reflection" placeholder="Today I feel..."></textarea>
+
+  <br><br>
+  <button onclick="saveMood()">Save Check-in</button>
+
+  <div id="entries"></div>
+</div>
+
+<div class="card">
+  <h3>Your Weekly Stress Trend</h3>
+  <p class="muted">Lower is calmer.</p>
+  <div class="chart" id="chart"></div>
+  <button class="secondary" onclick="clearLogs()">Clear journal</button>
+</div>
+
+</section>
+
+<div class="section-head">
+  <h2>A Gentle Reminder</h2>
+</div>
+
+<div class="card">
+  <h3 id="affirmation">
+    I can take one step at a time.
+  </h3>
+  <button class="secondary" onclick="newAffirmation()">
+    Another reminder ↻
+  </button>
+</div>
+
+</main>
+
+<footer>
+  ZenZone · A student-friendly calm space
+</footer>
+
+<!-- BOX BREATHING -->
+
+<div class="modal" id="breathModal">
+  <div class="modal-box">
+    <h2>Box Breathing</h2>
+    <div class="breath-circle" id="breathCircle">
+      <span id="breathCue">Ready?</span>
+    </div>
+    <div class="timer" id="breathCount">4</div>
+    <p class="muted" id="breathRound">Inhale · Hold · Exhale · Hold</p>
+    <div class="controls">
+      <button onclick="startBreathing()">Start</button>
+      <button class="secondary" onclick="stopBreathing()">Reset</button>
+      <button class="secondary" onclick="closeModal('breathModal')">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- DESK YOGA -->
+
+<div class="modal" id="yogaModal">
+  <div class="modal-box">
+    <h2>10 Desk Yoga Poses</h2>
+    <div class="pose-grid" id="poses"></div>
+    <br>
+    <button onclick="closeModal('yogaModal')">Close</button>
+  </div>
+</div>
+
+<!-- SOUND -->
+
+<div class="modal" id="soundModal">
+  <div class="modal-box">
+    <h2>Ambient Soundscape</h2>
+    <select id="soundType">
+      <option value="rain">Gentle Rain</option>
+      <option value="forest">Forest</option>
+      <option value="noise">White Noise</option>
+      <option value="bell">Temple Bells</option>
+    </select>
+    <button onclick="toggleSound()" id="soundBtn">▶ Play</button>
+    <p>Volume</p>
+    <input type="range" id="volume" min="0" max="100" value="25">
+    <br><br>
+    <button onclick="closeModal('soundModal');stopSound()">Close</button>
+  </div>
+</div>
+
+<!-- MEDITATION -->
+
+<div class="modal" id="medModal">
+  <div class="modal-box">
+    <h2>Meditation Timer</h2>
+    <select id="medDuration">
+      <option value="2">2 Minutes</option>
+      <option value="3">3 Minutes</option>
+      <option value="5" selected>5 Minutes</option>
+      <option value="7">7 Minutes</option>
+      <option value="10">10 Minutes</option>
+    </select>
+    <button onclick="startMeditation()">Start</button>
+    <button class="secondary" onclick="stopMeditation()">Reset</button>
+    <div class="timer" id="medClock">05:00</div>
+    <p id="medMessage">Sit comfortably and relax.</p>
+    <button onclick="closeModal('medModal')">Close</button>
+  </div>
+</div>
+
+<!-- SOS MODE -->
+
+<div class="sos" id="sos">
+  <div class="sos-inner">
+    <h1>You're here. That's enough for now.</h1>
+    <p id="sosPrompt">Put both feet on the floor.</p>
+    <div class="breath-circle" id="sosCircle">
+      <span id="sosCue">Settle</span>
+    </div>
+    <div class="timer" id="sosClock">02:00</div>
+    <p id="sosStep">Step 1 of 4</p>
+    <button onclick="endSOS()">Finish Calm Break</button>
+  </div>
+</div>
+
+<script>
+
+const $ = id => document.getElementById(id);
+
+function openModal(id) {
+  $(id).classList.add("show");
+}
+
+function closeModal(id) {
+  $(id).classList.remove("show");
+}
+
+// MOOD JOURNAL
+
+let mood = "🙂";
+let logs = JSON.parse(localStorage.getItem("zenLogs") || "[]");
+
+function chooseMood(button) {
+  document.querySelectorAll(".mood").forEach(b => {
+    b.classList.remove("selected");
+  });
+
+  button.classList.add("selected");
+  mood = button.textContent;
+}
+
+function saveMood() {
+  const today = new Date().toLocaleDateString();
+
+  const item = {
+    date: today,
+    mood: mood,
+    stress: Number($("stress").value),
+    note: $("reflection").value
+  };
+
+  logs = logs.filter(x => x.date !== today);
+  logs.push(item);
+  logs = logs.slice(-7);
+
+  localStorage.setItem("zenLogs", JSON.stringify(logs));
+
+  $("reflection").value = "";
+  renderLogs();
+}
+
+function renderLogs() {
+  $("entries").innerHTML = logs.slice().reverse().map(x =>
+    `<p>${x.mood} ${x.date} · Stress ${x.stress}/5</p>`
+  ).join("") || "<p>No entries yet.</p>";
+
+  $("chart").innerHTML = logs.map(x =>
+    `<div class="barbox">
+      <div class="bar" style="height:${x.stress * 17}px"></div>
+      ${x.date}
+    </div>`
+  ).join("");
+}
+
+function clearLogs() {
+  if (confirm("Clear your journal?")) {
+    logs = [];
+    localStorage.removeItem("zenLogs");
+    renderLogs();
+  }
+}
+
+renderLogs();
+
+// AFFIRMATIONS
+
+const affirmations = [
+  "I can take one step at a time.",
+  "My effort matters more than one difficult moment.",
+  "I am allowed to pause and begin again.",
+  "I can focus on the question in front of me.",
+  "A difficult exam does not define my worth.",
+  "I will do my best."
+];
+
+function newAffirmation() {
+  $("affirmation").textContent =
+    affirmations[Math.floor(Math.random() * affirmations.length)];
+}
+
+// BOX BREATHING
+
+const phases = ["Inhale", "Hold", "Exhale", "Hold"];
+
+let breathTimer = null;
+let phase = 0;
+let seconds = 4;
+
+function updateBreath() {
+  $("breathCue").textContent = phases[phase];
+  $("breathCount").textContent = seconds;
+
+  $("breathCircle").style.transform =
+    phase === 0 ? "scale(1.18)" :
+    phase === 2 ? "scale(.82)" : "scale(1)";
+}
+
+function startBreathing() {
+  if (breathTimer) return;
+
+  updateBreath();
+
+  breathTimer = setInterval(() => {
+    seconds--;
+
+    if (seconds <= 0) {
+      phase = (phase + 1) % 4;
+      seconds = 4;
+    }
+
+    updateBreath();
+  }, 1000);
+}
+
+function stopBreathing() {
+  clearInterval(breathTimer);
+  breathTimer = null;
+  phase = 0;
+  seconds = 4;
+
+  $("breathCue").textContent = "Ready?";
+  $("breathCount").textContent = "4";
+  $("breathCircle").style.transform = "scale(1)";
+}
+
+// DESK YOGA
+
+const poseData = [
+  ["Neck Side Stretch", "↔️"],
+  ["Shoulder Rolls", "🔄"],
+  ["Seated Spinal Twist", "🪑"],
+  ["Wrist Circles", "🖐️"],
+  ["Seated Cat-Cow", "🐈"],
+  ["Chest Opener", "👐"],
+  ["Seated Forward Fold", "🙇"],
+  ["Ankle Circles", "🦶"],
+  ["Overhead Reach", "🙆"],
+  ["Eye Rest", "👀"]
+];
+
+$("poses").innerHTML = poseData.map(p =>
+  `<div class="pose">
+    <span>${p[1]}</span>
+    <p><b>${p[0]}</b></p>
+  </div>`
+).join("");
+
+// MEDITATION TIMER
+
+let medTimer = null;
+let medLeft = 300;
+
+function formatTime(s) {
+  return String(Math.floor(s / 60)).padStart(2, "0") +
+    ":" + String(s % 60).padStart(2, "0");
+}
+
+function startMeditation() {
+  clearInterval(medTimer);
+
+  medLeft = Number($("medDuration").value) * 60;
+
+  $("medClock").textContent = formatTime(medLeft);
+
+  medTimer = setInterval(() => {
+    medLeft--;
+
+    $("medClock").textContent = formatTime(medLeft);
+
+    if (medLeft <= 0) {
+      stopMeditation();
+      $("medMessage").textContent =
+        "Session complete. Take this calm with you!";
+    }
+  }, 1000);
+}
+
+function stopMeditation() {
+  clearInterval(medTimer);
+  medTimer = null;
+
+  medLeft = Number($("medDuration").value) * 60;
+  $("medClock").textContent = formatTime(medLeft);
+}
+
+// AMBIENT SOUND
+
+let audioCtx = null;
+let soundSource = null;
+let soundOn = false;
+
+function toggleSound() {
+  if (soundOn) {
+    stopSound();
+    return;
+  }
+
+  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+  const type = $("soundType").value;
+
+  if (type === "bell") {
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+
+    osc.frequency.value = 660;
+    gain.gain.value = 0.05;
+
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+
+    osc.start();
+    osc.stop(audioCtx.currentTime + 1);
+
+    soundSource = osc;
+  } else {
+    const buffer = audioCtx.createBuffer(
+      1,
+      audioCtx.sampleRate * 2,
+      audioCtx.sampleRate
+    );
+
+    const data = buffer.getChannelData(0);
+
+    for (let i = 0; i < data.length; i++) {
+      data[i] = Math.random() * 2 - 1;
+    }
+
+    const source = audioCtx.createBufferSource();
+    const gain = audioCtx.createGain();
+
+    source.buffer = buffer;
+    source.loop = true;
+    gain.gain.value = Number($("volume").value) / 100 * 0.08;
+
+    source.connect(gain);
+    gain.connect(audioCtx.destination);
+    source.start();
+
+    soundSource = source;
+  }
+
+  soundOn = true;
+  $("soundBtn").textContent = "Ⅱ Stop";
+}
+
+function stopSound() {
+  if (soundSource) {
+    try {
+      soundSource.stop();
+    } catch(e) {}
+  }
+
+  soundSource = null;
+  soundOn = false;
+  $("soundBtn").textContent = "▶ Play";
+}
+
+// EXAM PANIC SOS
+
+let sosTimer = null;
+let sosLeft = 120;
+let sosPhase = 0;
+
+const sosTexts = [
+  "Put both feet on the floor. Relax your shoulders.",
+  "Breathe in gently for four seconds.",
+  "Breathe out slowly. You do not need to rush.",
+  "Think of one small next step."
+];
+
+function startSOS() {
+  $("sos").classList.add("show");
+
+  sosLeft = 120;
+  sosPhase = 0;
+
+  updateSOS();
+
+  clearInterval(sosTimer);
+
+  sosTimer = setInterval(() => {
+    sosLeft--;
+
+    if (sosLeft % 30 === 0 && sosPhase < 3) {
+      sosPhase++;
+    }
+
+    updateSOS();
+
+    if (sosLeft <= 0) {
+      clearInterval(sosTimer);
+      $("sosPrompt").textContent =
+        "You made space for a pause. Take your next step gently.";
+      $("sosStep").textContent = "Complete";
+    }
+  }, 1000);
+}
+
+function updateSOS() {
+  $("sosClock").textContent = formatTime(sosLeft);
+  $("sosPrompt").textContent = sosTexts[sosPhase];
+
+  $("sosStep").textContent = "Step " + (sosPhase + 1) + " of 4";
+
+  const cues = ["Settle", "Inhale", "Exhale", "Next step"];
+
+  $("sosCue").textContent = cues[sosPhase];
+
+  $("sosCircle").style.transform =
+    sosPhase === 1 ? "scale(1.15)" :
+    sosPhase === 2 ? "scale(.85)" : "scale(1)";
+}
+
+function endSOS() {
+  clearInterval(sosTimer);
+  $("sos").classList.remove("show");
+}
+
+</script>
+
+</body>
+</html>
